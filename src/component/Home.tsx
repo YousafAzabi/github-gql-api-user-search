@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import List from './List';
 import Search from './Search';
 import { useQuery, gql } from '@apollo/client';
 
 
 export default function Home() {
+  const [pageSize, setPageSize] = useState(5);
+  const [searchText, setSearchText] = useState('');
+
   const { loading, error, data } = useQuery(gql`
     {
-      search(query: "yousaf", type: USER, first: 5) {
+      search(query: "${searchText}", type: USER, first: ${pageSize}) {
         nodes {
           ...on User {
             name
