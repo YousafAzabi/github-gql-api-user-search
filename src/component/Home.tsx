@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      <Search />
+      <Search setSearchText={(text: string) => {setSearchText(text)}} />
       <List />
     </div>
   );
