@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Github GraphQL-API Users",
+  "name": "Display list of Users from GitHub gql-api matching search",
   "icons": [
     {
       "src": "favicon.ico",
