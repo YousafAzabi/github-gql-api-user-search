@@ -7,6 +7,7 @@ interface PropsType {
 
 const Search: FC<PropsType> = ({ setSearchText }) => {
   const [search, setSearch] = useState('');
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
