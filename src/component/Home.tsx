@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Search from './Search';
 import UserList from './UserList';
 import RepositoryList from './RepositoryList';
 import config from '../config.json';
 
- const Home = () => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    list: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+    },
+  }),
+);
+
+const Home = () => {
   const [pageSize, setPageSize] = useState(config.defaultPageSize);
   const [searchText, setSearchText] = useState('');
-  const [selectedUser, setSelectedUser] =useState('');
+  const [selectedUser, setSelectedUser] =useState({name: '', userName: ''});
+
+  const classes = useStyles();
 
   const { loading, error, data } = useQuery(gql`
     {
@@ -16,6 +29,7 @@ import config from '../config.json';
         nodes {
           ...on User {
             name
+            login
             avatarUrl
           }
         }
@@ -26,7 +40,7 @@ import config from '../config.json';
 
   const handleSearchChange = (text: string) => {
     setSearchText(text);
-    setSelectedUser('');
+    setSelectedUser({name: '', userName: ''});
   }
 
   const getList = () => {
@@ -34,9 +48,10 @@ import config from '../config.json';
     if (loading) { return <p>Loading</p> }
     return (
       <UserList
+        classes={classes}
         data={data.search}
-        selectedUser={selectedUser}
-        clickItem={(userName: string) => setSelectedUser(userName)}
+        selectedUserName={selectedUser.userName}
+        clickItem={(name: string, userName: string) => setSelectedUser({name, userName})}
       />
     );
   }
@@ -45,7 +60,7 @@ import config from '../config.json';
     <div className="home">
       <Search setSearchText={handleSearchChange} />
       {getList()}
-      <RepositoryList selectedUser={selectedUser} />
+      {selectedUser.userName && <RepositoryList classes={classes} selectedUser={selectedUser} />}
     </div>
   );
 }

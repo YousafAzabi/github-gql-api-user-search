@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import { List, ListItem, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 
 interface userNodeType {
   name: string,
+  login: string,
   avatarUrl: string
 }
 
@@ -12,40 +13,28 @@ interface PropsType {
     nodes: [userNodeType],
     userCount: number
   },
-  selectedUser: string,
-  clickItem: (userName: any) => void
+  selectedUserName: string,
+  clickItem: (name: string, userName: string) => void,
+  classes: ClassNameMap<"list">
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-    },
-  }),
-);
 
-const UsersList: FC<PropsType> = ({ data, selectedUser, clickItem }) => {
-  const classes = useStyles();
 
-  const handleClickItem = ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    clickItem(event.currentTarget.innerText);
-  });
+const UsersList: FC<PropsType> = ({ classes, data, selectedUserName, clickItem }) => {
 
   return (
-    <List dense className={classes.root}>
+    <List dense className={classes.list}>
       {data.nodes.map((node: userNodeType) => (
         <ListItem
-          key={node.name}
+          key={node.login}
           button
-          selected={node.name === selectedUser}
-          onClick={handleClickItem}
+          selected={node.login === selectedUserName}
+          onClick={() => clickItem(node.name, node.login)}
         >
           <ListItemAvatar>
             <Avatar alt={`Avatar ${node.name}`} src={node.avatarUrl} />
           </ListItemAvatar>
-          <ListItemText id={node.name} primary={node.name} />
+          <ListItemText id={node.login} primary={node.name} />
         </ListItem>
       ))}
     </List>
