@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import List from './List';
+import UserList from './UserList';
 import Search from './Search';
 import { useQuery, gql } from '@apollo/client';
 
@@ -22,13 +22,16 @@ export default function Home() {
     }
   `);
 
-  if (error) { return <p>error</p> }
-  if (loading) { return <p>Loading</p> }
+  const getList = () => {
+    if (error) { return <p>error</p> }
+    if (loading) { return <p>Loading</p> }
+    return <UserList data={data.search} />
+  }
 
   return (
     <div className="home">
-      <Search setSearchText={(text: string) => {setSearchText(text)}} />
-      <List />
+      <Search setSearchText={(text: string) => { setSearchText(text) }} />
+      {getList()}
     </div>
   );
 }
