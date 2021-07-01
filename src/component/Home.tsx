@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { useQuery, gql } from '@apollo/client';
 import UserList from './UserList';
 import Search from './Search';
-import { useQuery, gql } from '@apollo/client';
+import config from '../config.json';
 
-
-export default function Home() {
-  const [pageSize, setPageSize] = useState(5);
+ const Home = () => {
+  const [pageSize, setPageSize] = useState(config.defaultPageSize);
   const [searchText, setSearchText] = useState('');
 
   const { loading, error, data } = useQuery(gql`
@@ -35,3 +35,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;

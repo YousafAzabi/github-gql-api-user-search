@@ -2,11 +2,12 @@ import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import './App.css';
 import Home from './component/Home'
+import config from './config.json';
 
 const token = process.env.REACT_APP_API_TOKEN;
 
 const client = new ApolloClient({
-  uri: "https://api.github.com/graphql",
+  uri: config.gqlBaseUri,
   cache: new InMemoryCache(),
   headers: {
     authorization: `Bearer ${token}`
