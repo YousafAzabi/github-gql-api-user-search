@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useQuery } from '@apollo/client';
 import { List, ListItem, ListItemText, ListSubheader, ListItemAvatar, Avatar } from '@material-ui/core';
 import { ClassNameMap } from '@material-ui/core/styles/withStyles';
+import Navigation from './navigation';
 import { GET_USERS } from '../graphql/queries';
 import config from '../config.json';
 
@@ -54,6 +55,7 @@ const UsersList: FC<PropsType> = ({ classes, searchText, selectedUserName, click
           <ListItemText id={node.login} primary={node.name} />
         </ListItem>
       ))}
+      <Navigation classes={classes} />
     </List>
   );
 }

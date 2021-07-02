@@ -32,6 +32,19 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '45%',
       maxWidth: 360,
       margin: theme.spacing(1)
+    },
+    nav: {
+      width: '100%',
+      bottom: theme.spacing(1),
+      marginTop: theme.spacing(2)
+    },
+    previous: {
+      float: 'left',
+      marginLeft: theme.spacing(1)
+    },
+    next : {
+      float: 'right',
+      marginRight: theme.spacing(1)
     }
   })
 );
