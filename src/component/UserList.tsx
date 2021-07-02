@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { FC } from 'react';
+import { useQuery } from '@apollo/client';
 import { List, ListItem, ListItemText, ListSubheader, ListItemAvatar, Avatar } from '@material-ui/core';
 import { ClassNameMap } from '@material-ui/core/styles/withStyles';
+import { GET_USERS } from '../graphql/queries';
 import config from '../config.json';
 
 interface userNodeType {
@@ -18,23 +19,10 @@ interface PropsType {
 }
 
 const UsersList: FC<PropsType> = ({ classes, searchText, selectedUserName, clickItem }) => {
-  const [pageSize, setPageSize] = useState(config.defaultPageSize);
-  const [limitOffset, setLimitOffset] = useState(`first: ${pageSize}`);
-
-  const { loading, error, data } = useQuery(gql`
-    {
-      search(query: "${searchText}", type: USER, ${limitOffset}) {
-        nodes {
-          ...on User {
-            name
-            login
-            avatarUrl
-          }
-        }
-        userCount
-      }
-    }
-  `);
+  const { loading, error, data } = useQuery(GET_USERS, { variables: {
+    searchText,
+    limit: config.limit
+  }});
 
   return (
     <List

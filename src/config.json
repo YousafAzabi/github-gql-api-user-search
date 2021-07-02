@@ -1,4 +1,4 @@
 {
   "gqlBaseUri": "https://api.github.com/graphql",
-  "defaultPageSize": "10"
+  "limit": 10
 }

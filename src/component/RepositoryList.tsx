@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { FC } from 'react';
+import { useQuery } from '@apollo/client';
 import { List, ListItem, ListItemText, ListSubheader, Link } from '@material-ui/core';
 import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 import config from '../config.json';
+import { GET_REPOSITORIES } from '../graphql/queries';
 
 interface repoNodeType {
   name: string,
@@ -18,25 +19,10 @@ interface PropsType {
 }
 
 const RepositoryList: FC<PropsType> = ({ classes, selectedUser }) => {
-  const [pageSize, setPageSize] = useState(config.defaultPageSize);
-  const [limitOffset, setLimitOffset] = useState(`first: ${pageSize}`);
-
-  const { error, loading, data } = useQuery(gql`
-    {
-      user(login: "${selectedUser.userName}") {
-        repositories(${limitOffset}) {
-          nodes {
-            name
-            url
-          }
-          pageInfo {
-            startCursor
-            endCursor
-          }
-        }
-      }
-    }
-  `);
+  const { error, loading, data } = useQuery(GET_REPOSITORIES, { variables: {
+    userName: selectedUser.userName,
+    limit:  config.limit
+  }});
 
   return (
     <List
