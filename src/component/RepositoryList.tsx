@@ -1,50 +1,61 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { List, ListItem, ListItemText, ListSubheader, Link } from '@material-ui/core';
 import { ClassNameMap } from '@material-ui/core/styles/withStyles';
-
-interface PropsType {
-  selectedUser: {
-    name: string,
-    userName: string
-  },
-  classes: ClassNameMap<"list">
-}
+import config from '../config.json';
 
 interface repoNodeType {
   name: string,
   url: string
 }
 
+interface PropsType {
+  selectedUser: {
+    name: string,
+    userName: string
+  },
+  classes: ClassNameMap
+}
+
 const RepositoryList: FC<PropsType> = ({ classes, selectedUser }) => {
-  const { loading, error, data } = useQuery(gql`
+  const [pageSize, setPageSize] = useState(config.defaultPageSize);
+  const [limitOffset, setLimitOffset] = useState(`first: ${pageSize}`);
+
+  const { error, loading, data } = useQuery(gql`
     {
       user(login: "${selectedUser.userName}") {
-        repositories(first: 10){
-          nodes{
+        repositories(${limitOffset}) {
+          nodes {
             name
             url
+          }
+          pageInfo {
+            startCursor
+            endCursor
           }
         }
       }
     }
   `);
 
-  if (error) { return <p>error</p> }
-  if (loading) { return <p>Loading</p> }
-
   return (
     <List
       dense
       className={classes.list}
-      aria-labelledby="list-header"
+      aria-labelledby="repo-list-header"
       subheader={
-        <ListSubheader component="div" id="list-header">
-          {selectedUser.name}
+        <ListSubheader component="div" id="repo-list-header">
+          <h1>{selectedUser.name}</h1>
         </ListSubheader>
       }
     >
-      {data.user.repositories.nodes.map((node: repoNodeType, index: number) => (
+      {error ?
+        <p>error</p>
+      :
+      loading ?
+        <p>Loading</p>
+      :
+      data.user.repositories.nodes.map((node: repoNodeType, index: number) => (
         <ListItem key={index} button>
           <Link href={node.url}>
             <ListItemText id={node.name} primary={node.name} />

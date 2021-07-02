@@ -1,11 +1,13 @@
 import React, { FC, useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Grid } from '@material-ui/core';
+import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 
 interface PropsType {
-  setSearchText: (text: string) => void;
+  setSearchText: (text: string) => void,
+  classes: ClassNameMap
 };
 
-const Search: FC<PropsType> = ({ setSearchText }) => {
+const Search: FC<PropsType> = ({ classes, setSearchText }) => {
   const [search, setSearch] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,22 +15,26 @@ const Search: FC<PropsType> = ({ setSearchText }) => {
   };
 
   return (
-    <div className="search-container">
+    <Grid container justify="center" alignItems="center">
       <TextField
+        className={classes.search}
         id="search-field"
         label="search field"
         value={search}
         variant="outlined"
+        size="small"
         onChange={handleChange}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setSearchText(search)}
-      >
-        Search
-      </Button>
-    </div>
+      <div className={classes.search}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setSearchText(search)}
+        >
+          Search
+        </Button>
+      </div>
+    </Grid>
   );
 }
 
