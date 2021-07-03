@@ -32,6 +32,7 @@ interface PropsType {
 
 const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <div className={classes.content}>

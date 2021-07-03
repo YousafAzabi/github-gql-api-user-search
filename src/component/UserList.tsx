@@ -55,10 +55,11 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, itemClick, navC
 
   const handleNavPage = (action: string) => {
     if (data) {
+      const pageInfo = data.search.pageInfo;
       if (action === 'next') {
-        navClick({ first: config.limit, after: data.search.pageInfo.endCursor });
+        navClick({ first: config.limit, after: pageInfo.endCursor });
       } else {
-        navClick({ last: config.limit, before: data.search.pageInfo.startCursor });
+        navClick({ last: config.limit, before: pageInfo.startCursor });
       }
     }
   }

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useQuery } from '@apollo/client';
 import { List, ListItem, ListItemText, ListSubheader, Link } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Navigation from './navigation';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import config from '../config.json';
 
@@ -25,21 +26,32 @@ interface repoNodeType {
 }
 
 interface PropsType {
-  selectedUser: {
-    name: string,
-    userName: string
+  variables: {
+    userName: string,
+    first?: number,
+    last?: number,
+    after?: string,
+    before?: string
   }
+  selectedUserName: string,
+  navClick: ({ }) => void
 }
 
-const RepositoryList: FC<PropsType> = ({ selectedUser }) => {
+const RepositoryList: FC<PropsType> = ({ variables, selectedUserName, navClick }) => {
   const classes = useStyles();
 
-  const { error, loading, data } = useQuery(GET_REPOSITORIES, {
-    variables: {
-      userName: selectedUser.userName,
-      limit: config.limit
+  const { error, loading, data } = useQuery(GET_REPOSITORIES, { variables: variables });
+
+  const handleNavPage = (action: string) => {
+    if (data) {
+      const pageInfo = data.user.repositories.pageInfo;
+      if (action === 'next') {
+        navClick({ first: config.limit, after: pageInfo.endCursor });
+      } else {
+        navClick({ last: config.limit, before: pageInfo.startCursor });
+      }
     }
-  });
+  }
 
   return (
     <List
@@ -48,7 +60,7 @@ const RepositoryList: FC<PropsType> = ({ selectedUser }) => {
       aria-labelledby="repo-list-header"
       subheader={
         <ListSubheader component="div" id="repo-list-header">
-          <h2 className={classes.header}>{selectedUser.name}</h2>
+          <h2 className={classes.header}>{selectedUserName}</h2>
         </ListSubheader>
       }
     >
@@ -65,6 +77,7 @@ const RepositoryList: FC<PropsType> = ({ selectedUser }) => {
               </Link>
             </ListItem>
           ))}
+      <Navigation handleNext={() => handleNavPage('next')} handlePrev={() => handleNavPage('prev')} />
     </List>
   );
 }

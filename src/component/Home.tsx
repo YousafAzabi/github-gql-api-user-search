@@ -40,21 +40,34 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface variablesType {
-  searchText: string,
   first?: number,
   last?: number,
   after?: string,
   before?: string
 }
 
+interface userQueryVariablesType extends variablesType {
+  searchText: string
+}
+
+interface repoQueryVariablesType extends variablesType {
+  userName: string
+}
+
 const Home = () => {
   const classes = useStyles();
   const [selectedUser, setSelectedUser] = useState({ name: '', userName: '' });
-  const [getUserQueryVariables, setGetUserQueryVariables] = useState<variablesType>({ searchText: '', first: config.limit });
+  const [getUserQueryVariables, setGetUserQueryVariables] = useState<userQueryVariablesType>({ searchText: '', first: config.limit });
+  const [getRepoQueryVariables, setGetRepoQueryVariables] = useState<repoQueryVariablesType>({userName: ''});
 
   const handleSearchChange = (text: string) => {
     setGetUserQueryVariables({ searchText: text, first: config.limit });
     setSelectedUser({ name: '', userName: '' });
+  }
+
+  const handleSelectUser = (name: string, userName: string) => {
+    setGetRepoQueryVariables({ userName, first: config.limit });
+    setSelectedUser({ name, userName });
   }
 
   const handleUserNav = (limit: { first?: number, last?: number, after?: string, before?: string }) => {
@@ -62,20 +75,32 @@ const Home = () => {
       ...limit,
       searchText: getUserQueryVariables.searchText
     });
+    setSelectedUser({ name: '', userName: '' });
+  }
+
+  const handleRepoNav = (limit: { first?: number, last?: number, after?: string, before?: string }) => {
+    setGetRepoQueryVariables({
+      ...limit,
+      userName: selectedUser.userName
+    });
   }
 
   const getUserListComponent = () => (
     <UserList
       variables={getUserQueryVariables}
       selectedUserName={selectedUser.userName}
-      itemClick={(name: string, userName: string) => setSelectedUser({ name, userName })}
+      itemClick={handleSelectUser}
       navClick={handleUserNav}
     />
   );
 
   const getRepositoryListComponent = () => (
     selectedUser.userName ?
-      <RepositoryList selectedUser={selectedUser} />
+      <RepositoryList
+        variables={getRepoQueryVariables}
+        selectedUserName={selectedUser.name}
+        navClick={handleRepoNav}
+      />
       :
       <List
         className={classes.list}

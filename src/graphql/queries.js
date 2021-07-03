@@ -20,9 +20,9 @@ const GET_USERS = gql`
   }`;
 
 const GET_REPOSITORIES = gql`
-  query GetRepositories ($userName: String!, $limit: Int!) {
+  query GetRepositories ($userName: String!, $first: Int, $last: Int, $after: String, $before: String) {
     user(login: $userName) {
-      repositories(first: $limit) {
+      repositories(first: $first, last: $last, after: $after, before: $before) {
         nodes {
           name
           url
