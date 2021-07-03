@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useQuery } from '@apollo/client';
 import { List, ListItem, ListItemText, ListSubheader, ListItemAvatar, Avatar } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Navigation from './navigation';
 import { GET_USERS } from '../graphql/queries';
 import config from '../config.json';
 
@@ -23,20 +24,32 @@ interface userNodeType {
 }
 
 interface PropsType {
-  searchText: string,
+  variables: {
+    searchText: string,
+    first?: number,
+    last?: number,
+    after?: string,
+    before?: string
+  }
   selectedUserName: string,
-  clickItem: (name: string, userName: string) => void
+  itemClick: (name: string, userName: string) => void,
+  navClick: ({ }) => void
 }
 
-const UsersList: FC<PropsType> = ({ searchText, selectedUserName, clickItem }) => {
+const UsersList: FC<PropsType> = ({ variables, selectedUserName, itemClick, navClick }) => {
   const classes = useStyles();
 
-  const { loading, error, data } = useQuery(GET_USERS, {
-    variables: {
-      searchText,
-      limit: config.limit
+  const { loading, error, data } = useQuery(GET_USERS, { variables: variables });
+
+  const handleNavPage = (action: string) => {
+    if (data) {
+      if (action === 'next') {
+        navClick({ first: config.limit, after: data.search.pageInfo.endCursor });
+      } else {
+        navClick({ last: config.limit, before: data.search.pageInfo.startCursor });
+      }
     }
-  });
+  }
 
   return (
     <List
@@ -60,7 +73,7 @@ const UsersList: FC<PropsType> = ({ searchText, selectedUserName, clickItem }) =
               key={node.login}
               button
               selected={node.login === selectedUserName}
-              onClick={() => clickItem(node.name, node.login)}
+              onClick={() => itemClick(node.name, node.login)}
             >
               <ListItemAvatar>
                 <Avatar alt={`Avatar ${node.name}`} src={node.avatarUrl} />
@@ -68,6 +81,7 @@ const UsersList: FC<PropsType> = ({ searchText, selectedUserName, clickItem }) =
               <ListItemText id={node.login} primary={node.name} />
             </ListItem>
           ))}
+      <Navigation handleNext={() => handleNavPage('next')} handlePrev={() => handleNavPage('prev')} />
     </List>
   );
 }

@@ -34,7 +34,7 @@ const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
         aria-label="previous"
         className={classes.previous}
         size="small"
-        onClick={handleNext}
+        onClick={handlePrev}
       >
         <ArrowBackIcon fontSize="inherit" />
       </IconButton>
@@ -42,7 +42,7 @@ const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
         aria-label="next"
         className={classes.next}
         size="small"
-        onClick={handlePrev}
+        onClick={handleNext}
       >
         <ArrowForwardIcon fontSize="inherit" />
       </IconButton>

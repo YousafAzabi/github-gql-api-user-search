@@ -4,6 +4,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Search from './Search';
 import UserList from './UserList';
 import RepositoryList from './RepositoryList';
+import config from '../config.json';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,21 +32,38 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+interface variablesType {
+  searchText: string,
+  first?: number,
+  last?: number,
+  after?: string,
+  before?: string
+}
+
 const Home = () => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState('');
   const [selectedUser, setSelectedUser] = useState({ name: '', userName: '' });
+  const [getUserVariables, setGetUserVariables] = useState<variablesType>({ searchText: '', first: config.limit });
 
   const handleSearchChange = (text: string) => {
     setSearchText(text);
     setSelectedUser({ name: '', userName: '' });
   }
 
+  const handleUserNav = (variables: { first?: number, last?: number, after?: string, before?: string }) => {
+    setGetUserVariables({
+      ...variables,
+      searchText
+    });
+  }
+
   const getUserListComponent = () => (
     <UserList
-      searchText={searchText}
+      variables={getUserVariables}
       selectedUserName={selectedUser.userName}
-      clickItem={(name: string, userName: string) => setSelectedUser({ name, userName })}
+      itemClick={(name: string, userName: string) => setSelectedUser({ name, userName })}
+      navClick={handleUserNav}
     />
   );
 

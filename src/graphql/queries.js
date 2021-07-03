@@ -1,14 +1,19 @@
 import { gql } from '@apollo/client';
 
 const GET_USERS = gql`
-  query GetUsers ($searchText: String!, $limit: Int!) {
-    search(query: $searchText, type: USER, first: $limit) {
+  query GetUsers ($searchText: String!, $first: Int, $last: Int, $after: String, $before: String) {
+    search(query: $searchText, type: USER, first: $first, last: $last, after: $after, before: $before) {
       nodes {
         ...on User {
           name
           login
           avatarUrl
         }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
       }
       userCount
     }
@@ -25,6 +30,7 @@ const GET_REPOSITORIES = gql`
         pageInfo {
           startCursor
           endCursor
+          hasNextPage
         }
       }
     }
