@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
+
 interface PropsType {
   handleNext: React.MouseEventHandler<HTMLButtonElement>,
   handlePrev: React.MouseEventHandler<HTMLButtonElement>,

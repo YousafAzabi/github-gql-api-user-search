@@ -7,7 +7,7 @@ interface PropsType {
 
 const Error: FC<PropsType> = ({ message }) => {
   return (
-    <Alert severity="error">
+    <Alert severity="error" variant="filled">
       <AlertTitle>Error</AlertTitle>
       There is an error fetching the <strong>{message}</strong>
     </Alert>
