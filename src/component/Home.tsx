@@ -49,25 +49,24 @@ interface variablesType {
 
 const Home = () => {
   const classes = useStyles();
-  const [searchText, setSearchText] = useState('');
   const [selectedUser, setSelectedUser] = useState({ name: '', userName: '' });
-  const [getUserVariables, setGetUserVariables] = useState<variablesType>({ searchText: '', first: config.limit });
+  const [getUserQueryVariables, setGetUserQueryVariables] = useState<variablesType>({ searchText: '', first: config.limit });
 
   const handleSearchChange = (text: string) => {
-    setSearchText(text);
+    setGetUserQueryVariables({ searchText: text, first: config.limit });
     setSelectedUser({ name: '', userName: '' });
   }
 
-  const handleUserNav = (variables: { first?: number, last?: number, after?: string, before?: string }) => {
-    setGetUserVariables({
-      ...variables,
-      searchText
+  const handleUserNav = (limit: { first?: number, last?: number, after?: string, before?: string }) => {
+    setGetUserQueryVariables({
+      ...limit,
+      searchText: getUserQueryVariables.searchText
     });
   }
 
   const getUserListComponent = () => (
     <UserList
-      variables={getUserVariables}
+      variables={getUserQueryVariables}
       selectedUserName={selectedUser.userName}
       itemClick={(name: string, userName: string) => setSelectedUser({ name, userName })}
       navClick={handleUserNav}
@@ -81,7 +80,7 @@ const Home = () => {
       <List
         className={classes.list}
         subheader={
-          <ListSubheader component="div" id="list-header">
+          <ListSubheader component="div" id="repo-list-header">
             No User Selected
           </ListSubheader>
         }
