@@ -1,13 +1,22 @@
 import React, { FC, useState } from 'react';
 import { Button, TextField, Grid } from '@material-ui/core';
-import { ClassNameMap } from '@material-ui/core/styles/withStyles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    search: {
+      width: '45%',
+      maxWidth: 360,
+      margin: theme.spacing(1)
+    }
+  })
+);
 interface PropsType {
-  setSearchText: (text: string) => void,
-  classes: ClassNameMap
+  setSearchText: (text: string) => void
 };
 
-const Search: FC<PropsType> = ({ classes, setSearchText }) => {
+const Search: FC<PropsType> = ({ setSearchText }) => {
+  const classes = useStyles();
   const [search, setSearch] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
