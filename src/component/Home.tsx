@@ -90,7 +90,7 @@ const Home = () => {
       variables={getUserQueryVariables}
       selectedUserName={selectedUser.userName}
       itemClick={handleSelectUser}
-      navClick={handleUserNav}
+      fetchData={handleUserNav}
     />
   );
 
@@ -99,7 +99,7 @@ const Home = () => {
       <RepositoryList
         variables={getRepoQueryVariables}
         selectedUserName={selectedUser.name}
-        navClick={handleRepoNav}
+        fetchData={handleRepoNav}
       />
       :
       <List

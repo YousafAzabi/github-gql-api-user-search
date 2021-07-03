@@ -16,10 +16,10 @@ interface PropsType {
     before?: string
   }
   selectedUserName: string,
-  navClick: ({ }) => void
+  fetchData: ({ }) => void
 }
 
-const RepositoryList: FC<PropsType> = ({ variables, selectedUserName, navClick }) => {
+const RepositoryList: FC<PropsType> = ({ variables, selectedUserName, fetchData }) => {
   const { loading, error, data } = useQuery(GET_REPOSITORIES, { variables: variables });
 
   return (
@@ -28,7 +28,7 @@ const RepositoryList: FC<PropsType> = ({ variables, selectedUserName, navClick }
       error={error}
       loading={loading}
       pageInfo={data && data.user.repositories.pageInfo}
-      navClick={navClick}
+      fetchData={fetchData}
     >
       {data && data.user.repositories.nodes.map((node: repoNodeType, index: number) => (
         <ListItem key={index} button>

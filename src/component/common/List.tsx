@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { ApolloError } from '@apollo/client';
 import { List, ListSubheader } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Selector from './Selector';
 import Navigation from './Navigation';
 import Loading from './Loading';
 import Error from './Error';
@@ -32,17 +33,23 @@ interface PropsType {
   },
   error?: ApolloError,
   loading?: boolean,
-  navClick: ({ }) => void
+  fetchData: ({ }) => void
 }
 
-const RepositoryList: FC<PropsType> = ({ title, error, loading, pageInfo, navClick, children }) => {
+const RepositoryList: FC<PropsType> = ({ title, error, loading, pageInfo, fetchData, children }) => {
   const classes = useStyles();
+  const [limit, setLimit] = useState(config.limit);
+
+  const handleLimitChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setLimit(event.target.value as number);
+    fetchData({ first: event.target.value })
+  };
 
   const handleNavPage = (action: string) => {
     if (action === 'next') {
-      navClick({ first: config.limit, after: pageInfo.endCursor });
+      fetchData({ first: limit, after: pageInfo.endCursor });
     } else {
-      navClick({ last: config.limit, before: pageInfo.startCursor });
+      fetchData({ last: limit, before: pageInfo.startCursor });
     }
   }
 
@@ -54,6 +61,7 @@ const RepositoryList: FC<PropsType> = ({ title, error, loading, pageInfo, navCli
       subheader={
         <ListSubheader component="div" id="repo-list-header">
           <h2 className={classes.header}>{title}</h2>
+          <Selector numberOfItems={limit} handleChange={handleLimitChange} />
         </ListSubheader>
       }
     >

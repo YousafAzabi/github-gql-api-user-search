@@ -34,10 +34,10 @@ interface PropsType {
   }
   selectedUserName: string,
   itemClick: (name: string, userName: string) => void,
-  navClick: ({ }) => void
+  fetchData: ({ }) => void
 }
 
-const UsersList: FC<PropsType> = ({ variables, selectedUserName, navClick, itemClick }) => {
+const UsersList: FC<PropsType> = ({ variables, selectedUserName, fetchData, itemClick }) => {
   const classes = useStyles();
   const { loading, error, data } = useQuery(GET_USERS, { variables: variables });
 
@@ -47,7 +47,7 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, navClick, itemC
       error={error}
       loading={loading}
       pageInfo={data && data.search.pageInfo}
-      navClick={navClick}
+      fetchData={fetchData}
     >
       {data && data.search.nodes.map((node: userNodeType) => (
         <ListItem
