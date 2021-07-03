@@ -10,17 +10,24 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     "@global": {
       html: {
-        fontSize: 12,
+        fontSize: 14,
         [theme.breakpoints.up("sm")]: {
           fontSize: 18
         }
       }
     },
     root: {
+      display: 'flex',
+      flexFlow: 'column',
+      minHeight: `calc(100vh - ${theme.spacing(1)}px)`,
       padding: theme.spacing(0.5),
       [theme.breakpoints.up("sm")]: {
+        minHeight: `calc(100vh - ${theme.spacing(4)}px)`,
         padding: theme.spacing(2)
       }
+    },
+    content: {
+      flex: '1 1 auto'
     },
     list: {
       width: '45%',
@@ -83,8 +90,8 @@ const Home = () => {
 
   return (
     <Grid className={classes.root}>
-      <Search setSearchText={handleSearchChange} />
-      <Grid container justify="center">
+      <Search handleButtonClick={handleSearchChange} />
+      <Grid className={classes.content} container justify="center">
         {getUserListComponent()}
         <Divider orientation="vertical" flexItem />
         {getRepositoryListComponent()}

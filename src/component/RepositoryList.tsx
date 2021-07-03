@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.grey[100],
       margin: theme.spacing(0, 1),
       borderRadius: theme.spacing(1)
+    },
+    header: {
+      margin: `${theme.spacing(1)}px 0`
     }
   })
 );
@@ -45,7 +48,7 @@ const RepositoryList: FC<PropsType> = ({ selectedUser }) => {
       aria-labelledby="repo-list-header"
       subheader={
         <ListSubheader component="div" id="repo-list-header">
-          <h2>{selectedUser.name}</h2>
+          <h2 className={classes.header}>{selectedUser.name}</h2>
         </ListSubheader>
       }
     >

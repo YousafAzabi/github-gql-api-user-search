@@ -6,10 +6,14 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    nav: {
+    root: {
+      display: 'inline-block',
+      marginTop: theme.spacing(5)
+    },
+    content: {
+      position: 'absolute',
       width: '100%',
-      bottom: theme.spacing(1),
-      marginTop: theme.spacing(2)
+      bottom: theme.spacing(1)
     },
     previous: {
       float: 'left',
@@ -29,23 +33,25 @@ interface PropsType {
 const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
   const classes = useStyles();
   return (
-    <div className={classes.nav}>
-      <IconButton
-        aria-label="previous"
-        className={classes.previous}
-        size="small"
-        onClick={handlePrev}
-      >
-        <ArrowBackIcon fontSize="inherit" />
-      </IconButton>
-      <IconButton
-        aria-label="next"
-        className={classes.next}
-        size="small"
-        onClick={handleNext}
-      >
-        <ArrowForwardIcon fontSize="inherit" />
-      </IconButton>
+    <div className={classes.root}>
+      <div className={classes.content}>
+        <IconButton
+          aria-label="previous"
+          className={classes.previous}
+          size="small"
+          onClick={handlePrev}
+        >
+          <ArrowBackIcon fontSize="inherit" />
+        </IconButton>
+        <IconButton
+          aria-label="next"
+          className={classes.next}
+          size="small"
+          onClick={handleNext}
+        >
+          <ArrowForwardIcon fontSize="inherit" />
+        </IconButton>
+      </div>
     </div>
   );
 }

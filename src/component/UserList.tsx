@@ -14,6 +14,18 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.grey[100],
       margin: theme.spacing(0, 1),
       borderRadius: theme.spacing(1)
+    },
+    header: {
+      margin: `${theme.spacing(1)}px 0`
+    },
+    avatar: {
+      [theme.breakpoints.down("xs")]: {
+        minWidth: theme.spacing(5),
+        '& > *': {
+          width: theme.spacing(4),
+          height: theme.spacing(4),
+        }
+      }
     }
   })
 );
@@ -58,7 +70,7 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, itemClick, navC
       aria-labelledby="user-list-header"
       subheader={
         <ListSubheader component="div" id="user-list-header">
-          <h2>Users</h2>
+          <h2 className={classes.header}>User</h2>
         </ListSubheader>
       }
     >
@@ -75,8 +87,8 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, itemClick, navC
               selected={node.login === selectedUserName}
               onClick={() => itemClick(node.name, node.login)}
             >
-              <ListItemAvatar>
-                <Avatar alt={`Avatar ${node.name}`} src={node.avatarUrl} />
+              <ListItemAvatar className={classes.avatar}>
+                <Avatar alt={node.name} src={node.avatarUrl} />
               </ListItemAvatar>
               <ListItemText id={node.login} primary={node.name} />
             </ListItem>

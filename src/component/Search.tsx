@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 interface PropsType {
-  setSearchText: (text: string) => void
+  handleButtonClick: (text: string) => void
 };
 
-const Search: FC<PropsType> = ({ setSearchText }) => {
+const Search: FC<PropsType> = ({ handleButtonClick }) => {
   const classes = useStyles();
-  const [search, setSearch] = useState('');
+  const [searchText, setSearchText] = useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
   };
 
   return (
@@ -29,16 +29,16 @@ const Search: FC<PropsType> = ({ setSearchText }) => {
         className={classes.search}
         id="search-field"
         label="search field"
-        value={search}
+        value={searchText}
         variant="outlined"
         size="small"
-        onChange={handleChange}
+        onChange={handleSearchChange}
       />
       <div className={classes.search}>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => setSearchText(search)}
+          onClick={() => handleButtonClick(searchText)}
         >
           Search
         </Button>
