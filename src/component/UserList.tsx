@@ -43,7 +43,7 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, navClick, itemC
 
   return (
     <List
-      title="User"
+      title="Users"
       error={error}
       loading={loading}
       pageInfo={data && data.search.pageInfo}

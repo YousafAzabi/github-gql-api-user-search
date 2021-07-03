@@ -3,6 +3,7 @@ import { ApolloError } from '@apollo/client';
 import { List, ListSubheader } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Navigation from './Navigation';
+import Error from './Error';
 import config from '../../config.json';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,7 +57,7 @@ const RepositoryList: FC<PropsType> = ({ title, error, loading, pageInfo, navCli
       }
     >
       {error ?
-        <p>error</p>
+        <Error message={title === 'Users' ? 'Users' : `Repositories for ${title}`} />
         :
         loading ?
           <p>Loading</p>
