@@ -41,10 +41,10 @@ const RepositoryList: FC<PropsType> = ({ variables, selectedUserName, navClick }
   const classes = useStyles();
 
   const { error, loading, data } = useQuery(GET_REPOSITORIES, { variables: variables });
+  const pageInfo = data && data.user.repositories.pageInfo;
 
   const handleNavPage = (action: string) => {
     if (data) {
-      const pageInfo = data.user.repositories.pageInfo;
       if (action === 'next') {
         navClick({ first: config.limit, after: pageInfo.endCursor });
       } else {
@@ -77,7 +77,12 @@ const RepositoryList: FC<PropsType> = ({ variables, selectedUserName, navClick }
               </Link>
             </ListItem>
           ))}
-      <Navigation handleNext={() => handleNavPage('next')} handlePrev={() => handleNavPage('prev')} />
+      <Navigation
+        handleNext={() => handleNavPage('next')}
+        handlePrev={() => handleNavPage('prev')}
+        enableNext={data && pageInfo.hasNextPage}
+        enablePrev={data && pageInfo.hasPreviousPage}
+      />
     </List>
   );
 }

@@ -14,6 +14,7 @@ const GET_USERS = gql`
         startCursor
         endCursor
         hasNextPage
+        hasPreviousPage
       }
       userCount
     }
@@ -31,6 +32,7 @@ const GET_REPOSITORIES = gql`
           startCursor
           endCursor
           hasNextPage
+          hasPreviousPage
         }
       }
     }

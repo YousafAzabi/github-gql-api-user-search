@@ -27,10 +27,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 interface PropsType {
   handleNext: React.MouseEventHandler<HTMLButtonElement>,
-  handlePrev: React.MouseEventHandler<HTMLButtonElement>
+  handlePrev: React.MouseEventHandler<HTMLButtonElement>,
+  enableNext: boolean,
+  enablePrev: boolean
 }
 
-const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
+const Navigation: FC<PropsType> = ({ handleNext, handlePrev, enableNext, enablePrev }) => {
   const classes = useStyles();
 
   return (
@@ -41,6 +43,7 @@ const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
           className={classes.previous}
           size="small"
           onClick={handlePrev}
+          disabled={!enablePrev}
         >
           <ArrowBackIcon fontSize="inherit" />
         </IconButton>
@@ -49,6 +52,7 @@ const Navigation: FC<PropsType> = ({ handleNext, handlePrev }) => {
           className={classes.next}
           size="small"
           onClick={handleNext}
+          disabled={!enableNext}
         >
           <ArrowForwardIcon fontSize="inherit" />
         </IconButton>

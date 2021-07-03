@@ -52,10 +52,10 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, itemClick, navC
   const classes = useStyles();
 
   const { loading, error, data } = useQuery(GET_USERS, { variables: variables });
+  const pageInfo = data && data.search.pageInfo;
 
   const handleNavPage = (action: string) => {
     if (data) {
-      const pageInfo = data.search.pageInfo;
       if (action === 'next') {
         navClick({ first: config.limit, after: pageInfo.endCursor });
       } else {
@@ -94,7 +94,12 @@ const UsersList: FC<PropsType> = ({ variables, selectedUserName, itemClick, navC
               <ListItemText id={node.login} primary={node.name} />
             </ListItem>
           ))}
-      <Navigation handleNext={() => handleNavPage('next')} handlePrev={() => handleNavPage('prev')} />
+      <Navigation
+        handleNext={() => handleNavPage('next')}
+        handlePrev={() => handleNavPage('prev')}
+        enableNext={data && pageInfo.hasNextPage}
+        enablePrev={data && pageInfo.hasPreviousPage}
+      />
     </List>
   );
 }
