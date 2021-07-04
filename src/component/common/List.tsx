@@ -18,7 +18,29 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: theme.spacing(1)
     },
     header: {
-      margin: `${theme.spacing(1)}px 0`
+      display: 'flex',
+      justifyContent: 'space-between',
+      borderRadius: theme.spacing(1),
+      [theme.breakpoints.down("xs")]: {
+        paddingRight: theme.spacing(0.5)
+      },
+      '& > h2': {
+        margin: `${theme.spacing(1)}px 0`,
+        [theme.breakpoints.down("xs")]: {
+          fontSize: theme.spacing(1.5)
+        }
+      },
+      '& > div': {
+        height: theme.spacing(5),
+        marginTop: theme.spacing(2),
+        [theme.breakpoints.down("xs")]: {
+          height: theme.spacing(4)
+        },
+        '& > div': {
+          paddingTop: 0,
+          paddingBottom: 0
+        }
+      }
     }
   })
 );
@@ -59,8 +81,8 @@ const RepositoryList: FC<PropsType> = ({ title, error, loading, pageInfo, fetchD
       className={classes.root}
       aria-labelledby="repo-list-header"
       subheader={
-        <ListSubheader component="div" id="repo-list-header">
-          <h2 className={classes.header}>{title}</h2>
+        <ListSubheader className={classes.header} component="div" id="repo-list-header">
+          <h2>{title}</h2>
           <Selector numberOfItems={limit} handleChange={handleLimitChange} />
         </ListSubheader>
       }

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(0.5),
       [theme.breakpoints.up("sm")]: {
         minHeight: `calc(100vh - ${theme.spacing(4)}px)`,
-        padding: theme.spacing(2)
+        padding: theme.spacing(1)
       }
     },
     content: {
@@ -34,7 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 360,
       backgroundColor: theme.palette.grey[100],
       margin: theme.spacing(0, 1),
-      borderRadius: theme.spacing(1)
+      borderRadius: theme.spacing(2),
+      '& > *': {
+        borderRadius: theme.spacing(1)
+      }
     }
   })
 );
